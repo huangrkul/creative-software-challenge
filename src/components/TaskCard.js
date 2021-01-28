@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
+import {store} from './store.js';
 import {makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
@@ -99,22 +100,28 @@ const TaskCard = (props) => {
   }))
 
   const classes = useStyles();
-
-  const [priority, setPriority] = useState(0);
+  const [priority, setPriority] = useState(props.priority);
   const [isExpand, setExpand] = useState(false);
+  const globalState = useContext(store);
+  const {dispatch} = globalState;
 
-  const handleChange = e => {
-    console.log(e);
+  const handleChange = (e, id) => {
+    globalState.state.tasks[id].complete = true;
+    dispatch({type: 'tasks', payload: [...globalState.state.tasks]})
   }
+
+  useEffect(() => {
+  },[]) 
 
   return(
     <Paper className={classes.main}>
       <div className={classes.infoBar} onClick={() => {setExpand(true)}}>
         <div>
           <Checkbox
+            checked={props.complete}
             onChange={(e) => {
               e.preventDefault;
-              handleChange(e.target.checked);
+              handleChange(e.target.checked, props.index);
             }} 
           />
           <InputBase
