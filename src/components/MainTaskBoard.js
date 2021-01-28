@@ -8,10 +8,13 @@ import Paper from '@material-ui/core/Paper'
 
 const MainTaskBoard = (props) => {
 
-  const useStyles = makeStyles({
+  const useStyles = makeStyles((theme) => ({
     container: {
       width: '60%',
       margin: '2em auto',
+      [theme.breakpoints.down('sm')]: {
+        width: '90%'
+      },
       '& nav': {
         display: 'flex',
         marginBottom: '1em',
@@ -27,7 +30,7 @@ const MainTaskBoard = (props) => {
       borderRadius: '1em'
     }
 
-  })
+  }))
 
   const [isPending, setPending] = useState(true);
   const classes = useStyles();

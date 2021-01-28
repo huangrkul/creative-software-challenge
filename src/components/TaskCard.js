@@ -8,7 +8,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 
 const TaskCard = (props) => {
 
-  const useStyles = makeStyles({
+  const useStyles = makeStyles((theme) => ({
     main: {
       backgroundColor: '#fff',
       border: '1px solid #bbb',
@@ -20,6 +20,9 @@ const TaskCard = (props) => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
+      [theme.breakpoints.down('sm')]: {
+        flexWrap: 'wrap'
+      },
       '& > div:first-child': {
         flex: '1 0 70%',
         display: 'flex',
@@ -38,6 +41,9 @@ const TaskCard = (props) => {
       },
       '& > div:last-child': {
         flex: '1 0 30%',
+        [theme.breakpoints.down('sm')]: {
+          flex: '1 0 100%'
+        }
       },
     },
     buttonGroup: {
@@ -90,7 +96,7 @@ const TaskCard = (props) => {
     hide: {
       display: 'none'
     }
-  })
+  }))
 
   const classes = useStyles();
 
