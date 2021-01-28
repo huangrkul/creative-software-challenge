@@ -20,7 +20,7 @@ const PendingBoard = (props) => {
   const [tasks, setTasks] = useState([]);
 
   const createTask = () => {
-    const newTask = {title: 'New task', priority: 0, dueDate: 0};
+    const newTask = {title: 'New task', priority: 0, dueDate: 0, complete: false};
     setTasks((array) => [...array, newTask])
   }
 
@@ -28,7 +28,7 @@ const PendingBoard = (props) => {
     <div className={classes.container}>
       {tasks.map((task, id) => {
         return(
-          <TaskCard key={id} title={task.title} priority={task.priority} dueDate={task.dueDate}/>
+          <TaskCard key={id} title={task.title} priority={task.priority} dueDate={task.dueDate} isComplete={task.complete}/>
         )
       })}
       <aside style={{textAlign: 'right'}}><AddCircleIcon onClick={() => {createTask()}} className={classes.addButton}/></aside>

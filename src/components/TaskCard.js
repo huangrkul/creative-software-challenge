@@ -97,11 +97,20 @@ const TaskCard = (props) => {
   const [priority, setPriority] = useState(0);
   const [isExpand, setExpand] = useState(false);
 
+  const handleChange = e => {
+    console.log(e);
+  }
+
   return(
     <Paper className={classes.main}>
       <div className={classes.infoBar} onClick={() => {setExpand(true)}}>
         <div>
-          <Checkbox />
+          <Checkbox
+            onChange={(e) => {
+              e.preventDefault;
+              handleChange(e.target.checked);
+            }} 
+          />
           <InputBase
             readOnly={isExpand ? false : true}
             defaultValue={props.title}
