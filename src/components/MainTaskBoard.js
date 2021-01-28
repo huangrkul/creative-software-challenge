@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import PendingBoard from '../components/PendingBoard';
 import CompleteBoard from '../components/CompleteBoard';
@@ -39,12 +39,11 @@ const MainTaskBoard = (props) => {
   const {dispatch} = globalState;
   const [isPending, setPending] = useState(true);
   const classes = useStyles();
-  const taskList = globalState.state.tasks;
 
-  const updateTask = (id) => {
-    tasks[id].complete = true;
-    setTasks((array) => [...array]);
-  }
+  useEffect(() => {
+    const initTasks = localStorage.taskList ? JSON.parse(localStorage.getItem('taskList')) : [];
+    dispatch({type: 'tasks', payload: [...initTasks]});
+  },[])
 
   return(
     <article className={classes.container}>
@@ -53,7 +52,7 @@ const MainTaskBoard = (props) => {
         <div className={isPending ? classes.unfocused : ''} onClick={() => {setPending(false)}}>Completed</div>
       </nav>
       <Paper elevation={3} className={classes.contentBox}>
-        {isPending ? <PendingBoard /> : <CompleteBoard />}
+        {isPending ? <PendingBoard tasks={globalState.state.tasks} /> : <CompleteBoard tasks={globalState.state.tasks} />}
       </Paper>
     </article>
   )

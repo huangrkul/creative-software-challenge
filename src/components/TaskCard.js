@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {store} from './store.js';
 import {makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -37,13 +37,14 @@ const TaskCard = (props) => {
         },
         '& > div:last-child': {
           flex: '1 0 10%',
-          paddingRight: '0.5em'
+          textAlign: 'right',
         },
       },
       '& > div:last-child': {
         flex: '1 0 30%',
+        textAlign: 'right',
         [theme.breakpoints.down('sm')]: {
-          flex: '1 0 100%'
+          flex: '1 0 100%',
         }
       },
     },
@@ -51,7 +52,10 @@ const TaskCard = (props) => {
       display: 'none',
       width: '100%',
       justifyContent: 'flex-end',
-      marginTop: '2em'
+      marginTop: '2em',
+      [theme.breakpoints.down('sm')] : {
+        justifyContent: 'center'
+      }
     },
     buttons: {
       backgroundColor: '#eee',
@@ -65,6 +69,9 @@ const TaskCard = (props) => {
       '&:hover':{
         backgroundColor: '#ddd',
         border: '0.5em solid #ddd',
+      },
+      '&:first-child': {
+        marginLeft: '0'
       }
     },
     buttonOneActive: {
@@ -105,13 +112,31 @@ const TaskCard = (props) => {
   const globalState = useContext(store);
   const {dispatch} = globalState;
 
-  const handleChange = (e, id) => {
-    globalState.state.tasks[id].complete = true;
+  const handleCheck = () => {
+    globalState.state.tasks[props.index].complete = true;
     dispatch({type: 'tasks', payload: [...globalState.state.tasks]})
+    updateStorage();
+  }
+  
+  const handleTitle = (e) => {
+    globalState.state.tasks[props.index].title = e;
+    updateStorage();
+  }
+  
+  const handlePriority = (num) => {
+    setPriority(num);
+    globalState.state.tasks[props.index].priority = num;
+    updateStorage();
   }
 
-  useEffect(() => {
-  },[]) 
+  const handleDate = (e) => {
+    globalState.state.tasks[props.index].dueDate = e;
+    updateStorage();
+  }
+  
+  const updateStorage = () => {
+    localStorage.setItem('taskList',JSON.stringify(globalState.state.tasks))
+  }
 
   return(
     <Paper className={classes.main}>
@@ -120,14 +145,18 @@ const TaskCard = (props) => {
           <Checkbox
             checked={props.complete}
             onChange={(e) => {
-              e.preventDefault;
-              handleChange(e.target.checked, props.index);
+              e.stopPropagation();
+              e.preventDefault();
+              handleCheck();
             }} 
           />
           <InputBase
             readOnly={isExpand ? false : true}
             defaultValue={props.title}
             inputProps={{'aria-label': 'naked'}}
+            onChange={(e) => {
+              handleTitle(e.target.value);
+            }}
           />
           <div className={isExpand ? '' : classes.hide} onClick={
             (e) => {
@@ -139,14 +168,18 @@ const TaskCard = (props) => {
           <TextField
             readOnly={isExpand ? false : true}
             type='date'
-            defaultValue='2021-01-01'
+            size='small'
+            defaultValue= {props.dueDate !== 0 ? props.dueDate : '2021-01-01'}
+            onChange={(e) => {
+              handleDate(e.target.value);
+            }}
           />
         </div>
       </div>
       <div className={`${classes.buttonGroup} ${isExpand ? classes.panel : ''}`}>
-        <div onClick={() => {setPriority(1)}} className={`${classes.buttons} ${priority === 1 ? classes.buttonOneActive : ''}`}>low</div>
-        <div onClick={() => {setPriority(2)}} className={`${classes.buttons} ${priority === 2 ? classes.buttonTwoActive : ''}`}>medium</div>
-        <div onClick={() => {setPriority(3)}} className={`${classes.buttons} ${priority === 3 ? classes.buttonThreeActive : ''}`}>high</div>
+        <div onClick={() => {handlePriority(1)}} className={`${classes.buttons} ${priority === 1 ? classes.buttonOneActive : ''}`}>low</div>
+        <div onClick={() => {handlePriority(2)}} className={`${classes.buttons} ${priority === 2 ? classes.buttonTwoActive : ''}`}>medium</div>
+        <div onClick={() => {handlePriority(3)}} className={`${classes.buttons} ${priority === 3 ? classes.buttonThreeActive : ''}`}>high</div>
       </div>
     </Paper>
   )
