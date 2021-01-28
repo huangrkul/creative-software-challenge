@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TaskCard from '../components/TaskCard';
@@ -7,24 +7,20 @@ const PendingBoard = (props) => {
 
   const useStyles = makeStyles({
     container: {
-      backgroundColor: '#ddd',
-      padding: '1em'
-    },
-    taskCard: {
-      backgroundColor: '#777',
-      padding: '1em'
+      padding: '1rem'
     },
     addButton: {
       color: 'red',
-      fontSize: '3em'
-    }
+      fontSize: '3em',
+      cursor: 'pointer'
+    },
   })
   
   const classes = useStyles();
   const [tasks, setTasks] = useState([]);
 
   const createTask = () => {
-    const newTask = {title: 'task', priority: 0, dueDate: 0};
+    const newTask = {title: 'New task', priority: 0, dueDate: 0};
     setTasks((array) => [...array, newTask])
   }
 
@@ -35,7 +31,7 @@ const PendingBoard = (props) => {
           <TaskCard key={id} title={task.title} priority={task.priority} dueDate={task.dueDate}/>
         )
       })}
-      <aside><AddCircleIcon onClick={() => {createTask()}}className={classes.addButton}/></aside>
+      <aside style={{textAlign: 'right'}}><AddCircleIcon onClick={() => {createTask()}} className={classes.addButton}/></aside>
     </div>
   )
 }

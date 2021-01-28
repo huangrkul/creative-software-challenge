@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import PendingBoard from '../components/PendingBoard';
 import CompleteBoard from '../components/CompleteBoard';
+import Paper from '@material-ui/core/Paper'
 
 
 
@@ -11,9 +12,9 @@ const MainTaskBoard = (props) => {
     container: {
       width: '60%',
       margin: '2em auto',
-      backgroundColor: '#eee',
       '& nav': {
         display: 'flex',
+        marginBottom: '1em',
         '& div': {
           fontSize: '2em',
           marginRight: '1em'
@@ -21,9 +22,8 @@ const MainTaskBoard = (props) => {
       }
     },
     contentBox: {
-      backgroundColor: '#aaa',
       padding: '1em',
-      border: '1em solid #aaa',
+      border: '1px solid #fff',
       borderRadius: '1em'
     }
 
@@ -38,9 +38,9 @@ const MainTaskBoard = (props) => {
         <div>Pending</div>
         <div>Completed</div>
       </nav>
-      <section className={classes.contentBox}>
+      <Paper elevation={3} className={classes.contentBox}>
         {isPending ? <PendingBoard /> : <CompleteBoard />}
-      </section>
+      </Paper>
     </article>
   )
 }
