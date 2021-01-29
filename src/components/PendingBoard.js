@@ -23,7 +23,7 @@ const PendingBoard = (props) => {
 
   const createTask = () => {
     const newTask = {title: 'New task', priority: 0, dueDate: 0, complete: false};
-    dispatch({type: 'tasks', payload: [...globalState.state.tasks, newTask]})
+    dispatch({type: 'tasks', payload: [...globalState.state.tasks, newTask]}); 
   }
 
   return(

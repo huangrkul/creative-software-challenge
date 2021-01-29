@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {store} from './store.js';
 import {makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -21,7 +21,7 @@ const TaskCard = (props) => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         flexWrap: 'wrap'
       },
       '& > div:first-child': {
@@ -33,17 +33,17 @@ const TaskCard = (props) => {
           flex: '1 0 10%'
         },
         '& > div:nth-child(2)': {
-          flex: '1 0 80%'
+          flex: '1 0 70%'
         },
         '& > div:last-child': {
-          flex: '1 0 10%',
+          flex: '1 0 20%',
           textAlign: 'right',
         },
       },
       '& > div:last-child': {
         flex: '1 0 30%',
         textAlign: 'right',
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
           flex: '1 0 100%',
         }
       },
@@ -103,7 +103,14 @@ const TaskCard = (props) => {
     },
     hide: {
       display: 'none'
-    }
+    },
+    cancel: {
+      color: '#555',
+      transition: 'all 300ms ease',
+      '&:hover': {
+        color: '#000'
+      }
+    },
   }))
 
   const classes = useStyles();
@@ -112,31 +119,41 @@ const TaskCard = (props) => {
   const globalState = useContext(store);
   const {dispatch} = globalState;
 
-  const handleCheck = () => {
-    globalState.state.tasks[props.index].complete = true;
-    dispatch({type: 'tasks', payload: [...globalState.state.tasks]})
-    updateStorage();
-  }
-  
-  const handleTitle = (e) => {
-    globalState.state.tasks[props.index].title = e;
-    updateStorage();
-  }
-  
-  const handlePriority = (num) => {
-    setPriority(num);
-    globalState.state.tasks[props.index].priority = num;
-    updateStorage();
+  const handleChange = (category, value) => {
+    const newList = [...globalState.state.tasks];
+    switch(category){
+      case 'check':
+        newList[props.index].complete = newList[props.index].complete ? false : true;
+        break;
+      case 'title':
+        newList[props.index].title = value;
+        break;
+      case 'priority':
+        setPriority(value);
+        newList[props.index].priority = value;
+        break;
+      case 'date':
+        newList[props.index].dueDate = value;
+        break;
+      default:
+        break;
+    }
+    dispatch({type: 'tasks', payload: newList});
+    localStorage.setItem('taskList',JSON.stringify(newList))
   }
 
-  const handleDate = (e) => {
-    globalState.state.tasks[props.index].dueDate = e;
-    updateStorage();
+  const removeSelf = () => {
+    const filtered = globalState.state.tasks.filter((task, id) => {
+      console.log(`${id} and ${props.index}`);
+      return id !== props.index;
+    });
+    dispatch({type: 'tasks', payload: filtered});
+    localStorage.setItem('taskList',JSON.stringify(filtered))
   }
-  
-  const updateStorage = () => {
-    localStorage.setItem('taskList',JSON.stringify(globalState.state.tasks))
-  }
+
+  useEffect(() => {
+    //localStorage.setItem('taskList',JSON.stringify(globalState.state.tasks))
+  },[])
 
   return(
     <Paper className={classes.main}>
@@ -147,7 +164,7 @@ const TaskCard = (props) => {
             onChange={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              handleCheck();
+              handleChange('check');
             }} 
           />
           <InputBase
@@ -155,14 +172,15 @@ const TaskCard = (props) => {
             defaultValue={props.title}
             inputProps={{'aria-label': 'naked'}}
             onChange={(e) => {
-              handleTitle(e.target.value);
+              handleChange('title', e.target.value);
             }}
           />
-          <div className={isExpand ? '' : classes.hide} onClick={
-            (e) => {
+          <div className={isExpand ? '' : classes.hide}>
+            <CancelIcon className={classes.cancel} onClick={(e) => {
               e.stopPropagation();
-              setExpand(false)
-            }}><CancelIcon /></div>
+              removeSelf();
+            }}/>
+          </div>
         </div>
         <div>
           <TextField
@@ -171,15 +189,16 @@ const TaskCard = (props) => {
             size='small'
             defaultValue= {props.dueDate !== 0 ? props.dueDate : '2021-01-01'}
             onChange={(e) => {
-              handleDate(e.target.value);
+              e.stopPropagation();
+              handleChange('date', e.target.value);
             }}
           />
         </div>
       </div>
-      <div className={`${classes.buttonGroup} ${isExpand ? classes.panel : ''}`}>
-        <div onClick={() => {handlePriority(1)}} className={`${classes.buttons} ${priority === 1 ? classes.buttonOneActive : ''}`}>low</div>
-        <div onClick={() => {handlePriority(2)}} className={`${classes.buttons} ${priority === 2 ? classes.buttonTwoActive : ''}`}>medium</div>
-        <div onClick={() => {handlePriority(3)}} className={`${classes.buttons} ${priority === 3 ? classes.buttonThreeActive : ''}`}>high</div>
+      <div className={`${classes.buttonGroup} ${isExpand ? classes.panel : ''}`} onClick={() => {setExpand(false)}}>
+        <div onClick={(e) => {e.stopPropagation(); handleChange('priority', 1)}} className={`${classes.buttons} ${priority === 1 ? classes.buttonOneActive : ''}`}>low</div>
+        <div onClick={(e) => {e.stopPropagation(); handleChange('priority', 2)}} className={`${classes.buttons} ${priority === 2 ? classes.buttonTwoActive : ''}`}>medium</div>
+        <div onClick={(e) => {e.stopPropagation(); handleChange('priority', 3)}} className={`${classes.buttons} ${priority === 3 ? classes.buttonThreeActive : ''}`}>high</div>
       </div>
     </Paper>
   )
