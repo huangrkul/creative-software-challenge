@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import CancelIcon from '@material-ui/icons/Cancel';
+import uuid from 'react-uuid';
 
 const TaskCard = (props) => {
 
@@ -43,7 +44,7 @@ const TaskCard = (props) => {
       '& > div:last-child': {
         flex: '1 0 30%',
         textAlign: 'right',
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('sm')]: {
           flex: '1 0 100%',
         }
       },
@@ -124,6 +125,7 @@ const TaskCard = (props) => {
     switch(category){
       case 'check':
         newList[props.index].complete = newList[props.index].complete ? false : true;
+        dispatch({type: 'tasks', payload: newList});
         break;
       case 'title':
         newList[props.index].title = value;
@@ -135,21 +137,20 @@ const TaskCard = (props) => {
       case 'date':
         newList[props.index].dueDate = value;
         break;
-      case 'removed':
-        newList[props.index].removed = true;
-        break;
       default:
         break;
     }
-    dispatch({type: 'tasks', payload: newList});
-    localStorage.setItem('taskList',JSON.stringify(newList))
+    localStorage.setItem('taskList',JSON.stringify(newList));
   }
 
   const removeSelf = () => {
-    const filtered = globalState.state.tasks.filter((task, id) => {
-      return id !== props.index;
+    const newList = [...globalState.state.tasks];
+    newList[props.index].removed = true;
+    const filtered = newList.filter((task) => {
+      return task.removed !== true;
     });
-    localStorage.setItem('taskList',JSON.stringify(filtered))
+    dispatch({type: 'tasks', payload: filtered});
+    localStorage.setItem('taskList',JSON.stringify(filtered));
   }
 
   useEffect(() => {
@@ -179,7 +180,6 @@ const TaskCard = (props) => {
           <div className={isExpand ? '' : classes.hide}>
             <CancelIcon className={classes.cancel} onClick={(e) => {
               e.stopPropagation();
-              handleChange('removed');
               removeSelf();
             }}/>
           </div>

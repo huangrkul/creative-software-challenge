@@ -33,7 +33,7 @@ const App = () => {
           display: 'flex',
           justifyContent: 'space-between',
           '& > div' : {
-            flex: '1 0 50%',
+            flex: '0 0 45%',
           }
         }
       }

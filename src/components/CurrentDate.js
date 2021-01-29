@@ -14,20 +14,20 @@ const CurrentDate = (props) => {
     container: {
       padding: '1em',
       marginBottom: '2em',
-      maxWidth: '250px',
+      maxWidth: '282px',
       borderRadius: '1em',
       '& > div:first-child': {
-        fontSize: '2em',
+        fontSize: '1.75em',
         color: '#545454'
       },
       '& > div:nth-child(2)': {
-        fontSize: '2.4em',
-        lineHeight: '0.6em',
+        fontSize: '2.25em',
+        lineHeight: '0.75em',
       },
       '& > div:last-child' : {
-        fontSize: '1.5em',
+        fontSize: '1.75em',
         color: '#afafaf',
-        lineHeight: '2em'
+        lineHeight: '1.75em'
       }
 
     }

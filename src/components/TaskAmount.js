@@ -9,7 +9,20 @@ const TaskAmount = (props) => {
     container: {
       padding: '1rem',
       borderRadius: '1em',
-      maxWidth: '150px'
+      maxWidth: '150px',
+      textAlign: 'center',
+      '& > div:first-child': {
+        fontSize: '4em',
+        color: '#265a88',
+      },
+      '& > div:last-child' :  {
+        fontSize: '1.8em',
+        backgroundColor: '#f6f6f6',
+        border: '0.2em solid #f6f6f6',
+        borderRadius: '0.2em',
+        margin: 'auto',
+        width: '70%'
+      }
     }
   })
   
@@ -19,9 +32,14 @@ const TaskAmount = (props) => {
     return task.complete ? acc = acc : acc = acc + 1;
   },0)
 
+  useEffect(() => {
+    
+  })
+
   return(
     <Paper elevation={3} className={classes.container}>
-      {amount}
+      <div>{amount}</div>
+      <div>Tasks</div>
     </Paper>
   )
 }

@@ -3,6 +3,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TaskCard from '../components/TaskCard';
 import {store} from './store.js';
+import uuid from 'react-uuid';
 
 const PendingBoard = (props) => {
 
@@ -29,9 +30,9 @@ const PendingBoard = (props) => {
   return(
     <div className={classes.container}>
       {props.tasks.map((task, id) => {
-        if(!task.complete && !task.removed){
+        if(!task.complete){
           return(
-            <TaskCard key={id} index={id} title={task.title} priority={task.priority} dueDate={task.dueDate} removed={task.removed} complete={task.complete} />
+            <TaskCard key={uuid()} index={id} title={task.title} priority={task.priority} dueDate={task.dueDate} removed={task.removed} complete={task.complete} />
           )
         }
       })}
