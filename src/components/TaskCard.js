@@ -116,7 +116,7 @@ const TaskCard = (props) => {
 
   const classes = useStyles();
   const [priority, setPriority] = useState(props.priority);
-  const [isExpand, setExpand] = useState(false);
+  const [isExpand, setExpand] = useState(props.isExpanded);
   const globalState = useContext(store);
   const {dispatch} = globalState;
 
@@ -137,9 +137,13 @@ const TaskCard = (props) => {
       case 'date':
         newList[props.index].dueDate = value;
         break;
+      case 'expand':
+        newList[props.index].isExpanded = value;
+        setExpand(newList[props.index].isExpanded);
       default:
         break;
     }
+
     localStorage.setItem('taskList',JSON.stringify(newList));
   }
 
@@ -159,7 +163,7 @@ const TaskCard = (props) => {
 
   return(
     <Paper className={classes.main}>
-      <div className={classes.infoBar} onClick={() => {setExpand(true)}}>
+      <div className={classes.infoBar} onClick={() => {handleChange('expand', true)}}>
         <div>
           <Checkbox
             checked={props.complete}
@@ -197,7 +201,7 @@ const TaskCard = (props) => {
           />
         </div>
       </div>
-      <div className={`${classes.buttonGroup} ${isExpand ? classes.panel : ''}`} onClick={() => {setExpand(false)}}>
+      <div className={`${classes.buttonGroup} ${isExpand ? classes.panel : ''}`} onClick={() => {handleChange('expand', false)}}>
         <div onClick={(e) => {e.stopPropagation(); handleChange('priority', 1)}} className={`${classes.buttons} ${priority === 1 ? classes.buttonOneActive : ''}`}>low</div>
         <div onClick={(e) => {e.stopPropagation(); handleChange('priority', 2)}} className={`${classes.buttons} ${priority === 2 ? classes.buttonTwoActive : ''}`}>medium</div>
         <div onClick={(e) => {e.stopPropagation(); handleChange('priority', 3)}} className={`${classes.buttons} ${priority === 3 ? classes.buttonThreeActive : ''}`}>high</div>

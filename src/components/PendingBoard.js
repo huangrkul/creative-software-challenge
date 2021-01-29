@@ -23,7 +23,7 @@ const PendingBoard = (props) => {
   const {dispatch} = globalState;
 
   const createTask = () => {
-    const newTask = {title: 'New task', priority: 0, dueDate: 0, complete: false, removed: false};
+    const newTask = {title: 'New task', priority: 0, dueDate: 0, complete: false, removed: false, isExpanded: false};
     dispatch({type: 'tasks', payload: [...globalState.state.tasks, newTask]}); 
   }
 
@@ -32,7 +32,7 @@ const PendingBoard = (props) => {
       {props.tasks.map((task, id) => {
         if(!task.complete){
           return(
-            <TaskCard key={uuid()} index={id} title={task.title} priority={task.priority} dueDate={task.dueDate} removed={task.removed} complete={task.complete} />
+            <TaskCard key={uuid()} index={id} title={task.title} priority={task.priority} dueDate={task.dueDate} complete={task.complete} removed={task.removed} isExpanded={task.isExpanded} />
           )
         }
       })}

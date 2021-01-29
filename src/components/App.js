@@ -3,6 +3,9 @@ import MainTaskBoard from '../components/MainTaskBoard';
 import CurrentDate from '../components/CurrentDate';
 import TaskAmount from '../components/TaskAmount';
 import {makeStyles} from '@material-ui/core/styles';
+import Bgvector from '../../public/assets/bgvector.svg';
+import Bgvector1 from '../../public/assets/bgvector1.svg';
+
 
 const App = () => {
 
@@ -37,13 +40,27 @@ const App = () => {
           }
         }
       }
-    }
+    },
+    vectorOne: {
+      position: 'absolute',
+      zIndex: '-1',
+      right: '0',
+      top: '0',
+    },
+    vectorTwo: {
+      position: 'absolute',
+      zIndex: '-1',
+      left: '0',
+      bottom: '0',
+    },
   }))
   
   const classes = useStyles();
 
   return (
     <main className={classes.container}>
+      <img className={classes.vectorOne} src={Bgvector} />
+      <img className={classes.vectorTwo} src={Bgvector1} />
       <section><MainTaskBoard /></section>
       <section>
         <CurrentDate />
