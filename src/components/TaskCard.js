@@ -135,6 +135,9 @@ const TaskCard = (props) => {
       case 'date':
         newList[props.index].dueDate = value;
         break;
+      case 'removed':
+        newList[props.index].removed = true;
+        break;
       default:
         break;
     }
@@ -144,15 +147,13 @@ const TaskCard = (props) => {
 
   const removeSelf = () => {
     const filtered = globalState.state.tasks.filter((task, id) => {
-      console.log(`${id} and ${props.index}`);
       return id !== props.index;
     });
-    dispatch({type: 'tasks', payload: filtered});
     localStorage.setItem('taskList',JSON.stringify(filtered))
   }
 
   useEffect(() => {
-    //localStorage.setItem('taskList',JSON.stringify(globalState.state.tasks))
+    localStorage.setItem('taskList',JSON.stringify(globalState.state.tasks))
   },[])
 
   return(
@@ -178,6 +179,7 @@ const TaskCard = (props) => {
           <div className={isExpand ? '' : classes.hide}>
             <CancelIcon className={classes.cancel} onClick={(e) => {
               e.stopPropagation();
+              handleChange('removed');
               removeSelf();
             }}/>
           </div>

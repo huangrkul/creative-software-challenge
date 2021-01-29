@@ -15,7 +15,7 @@ const CompleteBoard = (props) => {
   return(
     <div className={classes.container}>
       {props.tasks.map((task, id) => {
-        if(task.complete){
+        if(task.complete && !task.removed){
           return(
             <TaskCard key={id} index={id} title={task.title} priority={task.priority} dueDate={task.dueDate} complete={task.complete} />
           )
