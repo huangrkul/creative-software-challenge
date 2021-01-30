@@ -17,7 +17,7 @@ const CompleteBoard = (props) => {
       {props.tasks.map((task, id) => {
         if(task.complete){
           return(
-            <TaskCard key={id} index={id} title={task.title} priority={task.priority} dueDate={task.dueDate} complete={task.complete} />
+            <TaskCard key={id} index={id} title={task.title} priority={task.priority} dueDate={Date.parse(task.dueDate)} complete={task.complete} />
           )
         }
       })}

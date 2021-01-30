@@ -29,7 +29,7 @@ const App = () => {
       },
       '& > section:last-of-type' : {
         flex: '1 0 30%',
-        marginBottom: '1em',
+        marginBottom: '2em',
         [theme.breakpoints.down('md')]: {
           width: '90%',
           flex: '1 0 100%',

@@ -2,11 +2,13 @@ import React, {useState, useContext, useEffect} from 'react';
 import {store} from './store.js';
 import {makeStyles} from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
+import EventIcon from '@material-ui/icons/Event';
 import CancelIcon from '@material-ui/icons/Cancel';
-import uuid from 'react-uuid';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
+import {parseISO} from 'date-fns';
 
 const TaskCard = (props) => {
 
@@ -42,7 +44,7 @@ const TaskCard = (props) => {
         },
       },
       '& > div:last-child': {
-        flex: '1 0 30%',
+        flex: '1 0 10%',
         textAlign: 'right',
         [theme.breakpoints.down('sm')]: {
           flex: '1 0 100%',
@@ -106,17 +108,28 @@ const TaskCard = (props) => {
       display: 'none'
     },
     cancel: {
-      color: '#555',
+      color: '#ff6159',
       transition: 'all 300ms ease',
       '&:hover': {
         color: '#000'
       }
     },
+    calendar: {
+      display: 'flex',
+      alignContent: 'center',
+      '& > span' : {
+        marginRight: '5px',
+      }
+    },
+    unfocused: {
+      color: '#afafaf'
+    }
   }))
 
   const classes = useStyles();
   const [priority, setPriority] = useState(props.priority);
   const [isExpand, setExpand] = useState(props.isExpanded);
+  const [date, setDate] = useState(props.dueDate);
   const globalState = useContext(store);
   const {dispatch} = globalState;
 
@@ -135,6 +148,7 @@ const TaskCard = (props) => {
         newList[props.index].priority = value;
         break;
       case 'date':
+        setDate(value);
         newList[props.index].dueDate = value;
         break;
       case 'expand':
@@ -156,6 +170,15 @@ const TaskCard = (props) => {
     dispatch({type: 'tasks', payload: filtered});
     localStorage.setItem('taskList',JSON.stringify(filtered));
   }
+
+  const Calendar = React.forwardRef((props, ref) => {
+    return(
+      <div className={classes.calendar}>
+        <span className={isExpand ? '' : classes.unfocused}>{props.value}</span>
+        <EventIcon onClick={props.onClick}/>
+      </div>
+    )
+  });
 
   useEffect(() => {
     localStorage.setItem('taskList',JSON.stringify(globalState.state.tasks))
@@ -189,15 +212,13 @@ const TaskCard = (props) => {
           </div>
         </div>
         <div>
-          <TextField
-            readOnly={isExpand ? false : true}
-            type='date'
-            size='small'
-            defaultValue= {props.dueDate !== 0 ? props.dueDate : '2021-01-01'}
-            onChange={(e) => {
-              e.stopPropagation();
-              handleChange('date', e.target.value);
+          <DatePicker
+            selected={date}
+            customInput={<Calendar />}
+            onChange={(newDate) => {
+              handleChange('date', newDate);
             }}
+            dateFormat="MMM d, yyyy"
           />
         </div>
       </div>
