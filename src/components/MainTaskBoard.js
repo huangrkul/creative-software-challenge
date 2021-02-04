@@ -5,32 +5,32 @@ import CompleteBoard from '../components/CompleteBoard';
 import Paper from '@material-ui/core/Paper';
 import {store} from './store.js';
 
-const MainTaskBoard = (props) => {
-
-  const useStyles = makeStyles((theme) => ({
-    container: {
-      width: '100%',
-      margin: '0 auto',
-      '& nav': {
-        display: 'flex',
-        marginBottom: '1em',
-        '& > div': {
-          fontSize: '2em',
-          marginRight: '1em',
-          cursor: 'pointer'
-        }
+const useStyles = makeStyles((theme) => ({
+  container: {
+    width: '100%',
+    margin: '0 auto',
+    '& nav': {
+      display: 'flex',
+      marginBottom: '1em',
+      '& > div': {
+        fontSize: '2em',
+        marginRight: '1em',
+        cursor: 'pointer'
       }
-    },
-    contentBox: {
-      padding: '1em',
-      border: '1px solid #fff',
-      borderRadius: '1em'
-    },
-    unfocused: {
-      color: '#999'
     }
+  },
+  contentBox: {
+    padding: '1em',
+    border: '1px solid #fff',
+    borderRadius: '1em'
+  },
+  unfocused: {
+    color: '#999'
+  }
 
-  }))
+}))
+
+const MainTaskBoard = (props) => {
 
   const globalState = useContext(store);
   const {dispatch} = globalState;

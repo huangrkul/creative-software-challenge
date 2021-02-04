@@ -8,123 +8,122 @@ import EventIcon from '@material-ui/icons/Event';
 import CancelIcon from '@material-ui/icons/Cancel';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
-import {parseISO} from 'date-fns';
 
-const TaskCard = (props) => {
-
-  const useStyles = makeStyles((theme) => ({
-    main: {
-      backgroundColor: '#fff',
-      border: '1px solid #bbb',
-      padding: '1em',
-      marginBottom: '1em',
-      cursor: 'pointer',
+const useStyles = makeStyles((theme) => ({
+  main: {
+    backgroundColor: '#fff',
+    border: '1px solid #bbb',
+    padding: '1em',
+    marginBottom: '1em',
+    cursor: 'pointer',
+  },
+  infoBar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+      flexWrap: 'wrap'
     },
-    infoBar: {
+    '& > div:first-child': {
+      flex: '1 0 70%',
       display: 'flex',
-      justifyContent: 'space-between',
       alignItems: 'center',
-      [theme.breakpoints.down('md')]: {
-        flexWrap: 'wrap'
-      },
+      justifyContent: 'space-between',
       '& > div:first-child': {
-        flex: '1 0 70%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        '& > div:first-child': {
-          flex: '1 0 10%'
-        },
-        '& > div:nth-child(2)': {
-          flex: '1 0 70%'
-        },
-        '& > div:last-child': {
-          flex: '1 0 20%',
-          textAlign: 'right',
-        },
+        flex: '1 0 10%'
+      },
+      '& > div:nth-child(2)': {
+        flex: '1 0 70%'
       },
       '& > div:last-child': {
-        flex: '1 0 10%',
+        flex: '1 0 20%',
         textAlign: 'right',
-        [theme.breakpoints.down('sm')]: {
-          flex: '1 0 100%',
-        }
       },
     },
-    buttonGroup: {
-      display: 'none',
-      width: '100%',
-      justifyContent: 'flex-end',
-      marginTop: '2em',
-      [theme.breakpoints.down('sm')] : {
-        justifyContent: 'center'
+    '& > div:last-child': {
+      flex: '1 0 10%',
+      textAlign: 'right',
+      [theme.breakpoints.down('sm')]: {
+        flex: '1 0 100%',
       }
     },
-    buttons: {
-      backgroundColor: '#eee',
-      border: '0.5em solid #eee',
-      borderRadius: '1.5em',
-      padding: '0 1em 0 1em',
-      fontSize: '0.8em',
-      marginLeft: '1em',
-      cursor: 'pointer',
-      transition: 'all 300ms ease-in-out',
-      '&:hover':{
-        backgroundColor: '#ddd',
-        border: '0.5em solid #ddd',
-      },
-      '&:first-child': {
-        marginLeft: '0'
-      }
+  },
+  buttonGroup: {
+    display: 'none',
+    width: '100%',
+    justifyContent: 'flex-end',
+    marginTop: '2em',
+    [theme.breakpoints.down('sm')] : {
+      justifyContent: 'center'
+    }
+  },
+  buttons: {
+    backgroundColor: '#eee',
+    border: '0.5em solid #eee',
+    borderRadius: '1.5em',
+    padding: '0 1em 0 1em',
+    fontSize: '0.8em',
+    marginLeft: '1em',
+    cursor: 'pointer',
+    transition: 'all 300ms ease-in-out',
+    '&:hover':{
+      backgroundColor: '#ddd',
+      border: '0.5em solid #ddd',
     },
-    buttonOneActive: {
+    '&:first-child': {
+      marginLeft: '0'
+    }
+  },
+  buttonOneActive: {
+    backgroundColor: '#5fcd8d',
+    border: '0.5em solid #5fcd8d',
+    '&:hover': {
       backgroundColor: '#5fcd8d',
       border: '0.5em solid #5fcd8d',
-      '&:hover': {
-        backgroundColor: '#5fcd8d',
-        border: '0.5em solid #5fcd8d',
-      }
-    },
-    buttonTwoActive: {
+    }
+  },
+  buttonTwoActive: {
+    backgroundColor: '#fb8333',
+    border: '0.5em solid #fb8333',
+    '&:hover': {
       backgroundColor: '#fb8333',
       border: '0.5em solid #fb8333',
-      '&:hover': {
-        backgroundColor: '#fb8333',
-        border: '0.5em solid #fb8333',
-      }
-    },
-    buttonThreeActive: {
+    }
+  },
+  buttonThreeActive: {
+    backgroundColor: '#ff6159',
+    border: '0.5em solid #ff6159',
+    '&:hover': {
       backgroundColor: '#ff6159',
       border: '0.5em solid #ff6159',
-      '&:hover': {
-        backgroundColor: '#ff6159',
-        border: '0.5em solid #ff6159',
-      }
-    },
-    panel: {
-      display: 'flex'
-    },
-    hide: {
-      display: 'none'
-    },
-    cancel: {
-      color: '#ff6159',
-      transition: 'all 300ms ease',
-      '&:hover': {
-        color: '#000'
-      }
-    },
-    calendar: {
-      display: 'flex',
-      alignContent: 'center',
-      '& > span' : {
-        marginRight: '5px',
-      }
-    },
-    unfocused: {
-      color: '#afafaf'
     }
-  }))
+  },
+  panel: {
+    display: 'flex'
+  },
+  hide: {
+    display: 'none'
+  },
+  cancel: {
+    color: '#ff6159',
+    transition: 'all 300ms ease',
+    '&:hover': {
+      color: '#000'
+    }
+  },
+  calendar: {
+    display: 'flex',
+    alignContent: 'center',
+    '& > span' : {
+      marginRight: '5px',
+    }
+  },
+  unfocused: {
+    color: '#afafaf'
+  }
+}))
+
+const TaskCard = (props) => {
 
   const classes = useStyles();
   const [priority, setPriority] = useState(props.priority);

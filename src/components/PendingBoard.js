@@ -5,18 +5,18 @@ import TaskCard from '../components/TaskCard';
 import {store} from './store.js';
 import uuid from 'react-uuid';
 
-const PendingBoard = (props) => {
+const useStyles = makeStyles({
+  container: {
+    padding: '1rem'
+  },
+  addButton: {
+    color: 'red',
+    fontSize: '3em',
+    cursor: 'pointer'
+  },
+})
 
-  const useStyles = makeStyles({
-    container: {
-      padding: '1rem'
-    },
-    addButton: {
-      color: 'red',
-      fontSize: '3em',
-      cursor: 'pointer'
-    },
-  })
+const PendingBoard = (props) => {
   
   const classes = useStyles();
   const globalState = useContext(store);

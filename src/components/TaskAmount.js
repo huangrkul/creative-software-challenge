@@ -3,28 +3,38 @@ import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import {store} from './store.js';
 
-const TaskAmount = (props) => {
-
-  const useStyles = makeStyles({
-    container: {
-      padding: '1rem',
-      borderRadius: '1em',
-      maxWidth: '150px',
-      textAlign: 'center',
-      '& > div:first-child': {
-        fontSize: '4em',
-        color: '#265a88',
+const useStyles = makeStyles((theme) => ({
+  container: {
+    padding: '1rem',
+    borderRadius: '1em',
+    maxWidth: '150px',
+    textAlign: 'center',
+    [theme.breakpoints.down('xs')] : {
+      maxWidth: '80px',
+      marginBottom: '2em',
+    },
+    '& > div:first-child': {
+      fontSize: '4em',
+      color: '#265a88',
+      [theme.breakpoints.down('xs')] : {
+        fontSize: '3.5em',
       },
-      '& > div:last-child' :  {
-        fontSize: '1.8em',
-        backgroundColor: '#f6f6f6',
-        border: '0.2em solid #f6f6f6',
-        borderRadius: '0.2em',
-        margin: 'auto',
-        width: '70%'
-      }
+    },
+    '& > div:last-child' :  {
+      fontSize: '1.8em',
+      backgroundColor: '#f6f6f6',
+      border: '0.2em solid #f6f6f6',
+      borderRadius: '0.2em',
+      margin: 'auto',
+      width: '70%',
+      [theme.breakpoints.down('xs')] : {
+        fontSize: '1em',
+      },
     }
-  })
+  }
+}))
+
+const TaskAmount = (props) => {
   
   const classes = useStyles();
   const globalState = useContext(store);
